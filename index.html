@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" ng-app='app'>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>User Finder</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <link rel="stylesheet" href="custom.css">
+  <script src="http://d3js.org/d3.v3.min.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
+  <script >
+
+    var app = angular.module('app', []);
+
+    app.controller('MainCtrl', function($http){
+      var vm = this;
+      vm.data = false;
+      vm.loading = true;
+
+      vm.fetchData = function(user){
+        $http.get('https://api.github.com/users/' + user.name).then(function(res){
+           vm.data = true;
+           vm.name = res.data.login;
+           vm.location = res.data.location;
+           vm.followers = res.data.followers;
+           vm.following = res.data.following;
+           vm.repos = res.data.public_repos;
+           console.log(res.data);
+           vm.loading = false;
+
+          //return JSON.parse(res);
+      });
+    };
+  });
+  //   //console.log(angular.toJson();
+
+  </script>
+</head>
+
+<body ng-controller = 'MainCtrl as vm'>
+  <!-- <img id="img-1" src="images/img-1.jpg"> -->
+  <h1></h1>
+  <h1 class="display-3 font-weight-bold text-center">User Finder</h1>
+  <p class="text-center display-4">Find the user information by typing the name </p>
+
+
+
+<!-- <form id="myForm" action="index.html">
+  <select id="mySelect" >
+    <option value="2016">2016</option>
+    <option value="2017">2017</option>
+    <option value="2018">2018</option>
+  </select>
+</form> -->
+
+<div class="user-input" align="center">
+  <input type="text" id="search" ng-model="user.name" placeholder="Enter a user name ...">
+  <button type="button" class="search_button" ng-click='vm.fetchData(user)'>Search</button>
+</div>
+
+<h4 ng-if='vm.loading === true' align="center">Loading...</h4>
+<h3 align="center">Name: {{vm.name}} --- Location: {{vm.location}}</h3>
+<h3 align="center">Followers: {{vm.followers}} --- Following: {{vm.following}} --- Repos: {{vm.repos}}</h3>
+
+
+<!-- canvas is essentially a drawing space for js -->
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+  <script src="main.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+
+
+</body>
+</html>
